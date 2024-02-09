@@ -26,7 +26,7 @@ async fn main() {
         .and(with_clients(clients.clone()))
         .and_then(handlers::ws_handler);
     let routes = ws_route.with(warp::cors().allow_any_origin());
-    println!("Starting server");
+    println!("Started server");
     warp::serve(routes).run(([127, 0, 0, 1], 8000)).await;
 }
 

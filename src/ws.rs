@@ -49,10 +49,10 @@ async fn client_msg(client_id: &str, msg: Message, clients: &Clients) {
 
     let data = msg.into_bytes();
     let mut locked = clients.lock().await;
-    let mut toSend = Vec::new();
+    let mut to_send = Vec::new();
     for client in locked.clone().into_values() {
         if client.client_id != client_id {
-            toSend.insert(0, client.state);
+            to_send.insert(0, client.state);
         }
     }
 
@@ -61,9 +61,9 @@ async fn client_msg(client_id: &str, msg: Message, clients: &Clients) {
             v.state = data;
 
             if let Some(sender) = &v.sender {
-                print!("Sending remote state(s)");
+                println!("Sending remote state(s)");
 
-                for state in toSend {
+                for state in to_send {
                     let _ = sender.send(Ok(Message::binary(state)));
                 }
             }
